@@ -6,6 +6,8 @@ import bodyParser from "body-parser";
 import http from "http";
 import createError from "http-errors";
 import { expressPort } from "../package.json";
+//import ACCConnection from './acc'
+//dotenv.config();
 
 const app = express();
 
@@ -28,6 +30,16 @@ app.use((err: any, req: any, res: any, _next: any) => {
 
   res.status(err.status || 500).render("error");
 });
+
+/*app.post('/replay', (req, res) => {
+    acc.requestReplay(req.body)
+})
+app.post('/connect', (req, res) => {
+
+    acc.disconnectACC();
+    acc.initACCConnection();
+})*/
+
 
 const server = http.createServer(app);
 

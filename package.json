@@ -1,5 +1,5 @@
 {
-    "name": "rennwelten-ai-steward",
+    "name": "@asappz/rennwelten-ai-steward",
     "description": "A smart Tool that supports Sim Racing Stewards during the stewarding process",
     "license": "MIT",
     "version": "1.0.14",
@@ -10,7 +10,7 @@
     "authors": [
         "Asappz UG (Haftungsbeschränkt) Julian Sunten <js@asappz.com>"
     ],
-    "repository": "https://github.com/juliansunten/rennwelten-ai-steward-new.git",
+    "repository": "https://github.com/asappz/rennwelten-ai-steward.git",
     "private": true,
     "scripts": {
         "build": "build:client && tsc && yarn copy:client-to-server",

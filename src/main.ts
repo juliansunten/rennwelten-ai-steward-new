@@ -1,4 +1,7 @@
 import { app, globalShortcut, BrowserWindow, ipcMain } from "electron";
+if(require('electron-squirrel-startup')) {
+  app.quit();
+}
 import { Readable } from "stream";
 import { spawn } from "child_process";
 import path from "path";
@@ -12,9 +15,6 @@ const appName = app.getPath("exe");
 const expressAppUrl = "http://127.0.0.1:3000";
 let mainWindow: BrowserWindow | null;
 
-if (require('electron-squirrel-startup')){
-  app.quit();
-}
 require('update-electron-app')();
 
 const expressPath = appName.endsWith(`${name}.exe`)
