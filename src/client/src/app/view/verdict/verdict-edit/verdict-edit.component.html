@@ -1,0 +1,26 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>Urteile anlegen</h5>
+            <form [formGroup]="form" class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="race">Rennen</label>
+                    <p-multiSelect formControlName="race" label="title" [options]="raceList"></p-multiSelect>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="eligiblePenalties">Verstoßkategorie</label>
+                    <p-multiSelect formControlName="eligiblePenalties" label="title" [options]="penaltyList"></p-multiSelect>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="accused">Verursacher</label>
+                    <p-multiSelect formControlName="accused" label="displayName" [options]="driverList"></p-multiSelect>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="damaged">Geschädigte Fahrer</label>
+                    <p-multiSelect formControlName="damaged" label="displayName" [options]="driverList"></p-multiSelect>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

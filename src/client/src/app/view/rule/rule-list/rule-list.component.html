@@ -1,0 +1,50 @@
+<div class="card">
+    <p-table #dt [value]="ruleList"
+             [paginator]="false"
+             [showCurrentPageReport]="true"
+             responsiveLayout="scroll"
+             [globalFilterFields]="['title','isActive','updatedAt']">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                <span class="p-input-icon-left w-full sm:w-20rem flex-order-1 sm:flex-order-0">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Suche nach einem Regelwerk" class="w-full" />
+                </span>
+                <button
+                    (click)="navigateToCreateRule()"
+                    pButton class="p-button-outlined w-full sm:w-auto flex-order-0 sm:flex-order-1"
+                    icon="pi pi-user-plus"
+                    label="neue Regel anlegen"
+                >
+                </button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="title" class="white-space-nowrap" style="width:25%">Titel<p-sortIcon field="title"></p-sortIcon></th>
+                <th pSortableColumn="updatedAt" class="white-space-nowrap" style="width:25%">Zuletzt bearbeitet am<p-sortIcon field="updatedAt"></p-sortIcon></th>
+                <th pSortableColumn="isActive" class="white-space-nowrap" style="width:25%">Ist Aktiv?<p-sortIcon field="isActive"></p-sortIcon></th>
+                <th pSortableColumn="eligablePenalties" class="white-space-nowrap" style="width:25%">AnwendbareStrafen<p-sortIcon field="eligablePenalties"></p-sortIcon></th>
+                <th class="white-space-nowrap"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+            <tr>
+                <td>{{data.title}}</td>
+                <td>{{data.updatedAt | date: 'dd.MM.yyyy'}}</td>
+                <td *ngIf="data.isActive"><p-tag styleClass="mr-2" severity="success" value="Aktiv"></p-tag>
+                <td *ngIf="!data.isActive"><p-tag styleClass="mr-2" severity="danger" value="Inaktiv"></p-tag>
+                </td>
+                <td>
+                    <p [innerHTML]="data.eligiblePenalties | translatePenaltyList">
+                    </p>
+                </td>
+
+                <td class="action-column">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" (click)="onEditRule(data.id)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="onDeleteRule(data)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

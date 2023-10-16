@@ -8,18 +8,7 @@ import createError from "http-errors";
 import { expressPort } from "../package.json";
 
 const app = express();
-const router = express.Router();
 
-const routes = [
-  { path: "/", viewName: "index", title: "Home" },
-  { path: "/pageTwo", viewName: "pageTwo", title: "Page 2" },
-  { path: "/pageThree", viewName: "pageThree", title: "Page 3" },
-  { path: "/pageFour", viewName: "pageFour", title: "Page 4" }
-];
-
-routes.forEach(({ path, viewName, title }) => {
-  router.get(path, (_req, res) => res.render(viewName, { title }));
-});
 
 app.set("port", expressPort);
 app.set("views", path.join(__dirname, "..", "views"));
@@ -30,7 +19,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "..", "public")));
-app.use("/", router);
+
+
+
+
+
 app.use((_req, _res, next) => next(createError(404)));
 app.use((err: any, req: any, res: any, _next: any) => {
   res.locals.title = "error";

@@ -1,0 +1,74 @@
+<div class="card">
+    <p-table
+        #dt
+        [value]="users"
+        [paginator]="true"
+        [rows]="10"
+        dataKey="uid" editMode="row"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} user entries"
+        [rowsPerPageOptions]="[10,25,50]"
+        [globalFilterFields]="['displayName','userType']"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                <span class="p-input-icon-left w-full sm:w-20rem flex-order-1 sm:flex-order-0">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Global Search" class="w-full" />
+                </span>
+                <button
+                    (click)="navigateToCreateDriver()"
+                    pButton class="p-button-outlined w-full sm:w-auto flex-order-0 sm:flex-order-1"
+                    icon="pi pi-user-plus"
+                    label="Add new user"
+                >
+                </button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" >
+            <tr>
+                <th class="white-space-nowrap" style="width:25%"></th>
+                <th pSortableColumn="displayName" class="white-space-nowrap" style="width:25%">Name<p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="userType" class="white-space-nowrap" style="width:25%">Rolle<p-sortIcon field="userType"></p-sortIcon></th>
+                <th class="white-space-nowrap" style="width:25%">Fährt gerade?<p-sortIcon field="name"></p-sortIcon></th>
+                <th class="white-space-nowrap" style="width:25%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="data">
+                <td>
+                    <div class="flex">
+                        <img class="userImage" [src]="data.avatarUrl" [alt]="data.avatarUrl"/>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex">
+                        {{data.displayName}}
+                    </div>
+                </td>
+                <td [pEditableColumn]="data.userType" pEditableColumnField="userType">
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <div class="flex-column flex">
+                                <p-checkbox name="userType" [(ngModel)]="data.userType" label="Fahrer" [value]="USER_TYPE.DRIVER" (onChange)="handleUserRoleUpdate($event, data?.uid)"></p-checkbox>
+                                <p-checkbox name="userType" [(ngModel)]="data.userType" label="Steward" [value]="USER_TYPE.STEWARD" (onChange)="handleUserRoleUpdate($event, data?.uid)"></p-checkbox>
+                                <p-checkbox name="userType" [(ngModel)]="data.userType" label="Admin" [value]="USER_TYPE.ADMIN" (onChange)="handleUserRoleUpdate($event, data?.uid)"></p-checkbox>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{data.userType.join(',')}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>Rennen XY Nordschleife</td>
+                <td>
+                    <div class="flex">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="handleUserEdit(data)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="handleUserDeletion(data)"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -1,0 +1,60 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>User</h5>
+            <form [formGroup]="form" class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="avatarUrl">Avatar*</label>
+                    <input formControlName="avatarUrl" pInputText id="avatarUrl" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="userType">Usertype</label>
+                    <p-multiSelect formControlName="userType" [options]="userTypeSelectOptions"></p-multiSelect>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="firstName">Given Name*</label>
+                    <input formControlName="firstName" pInputText id="firstName" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="lastname">Last Name*</label>
+                    <input formControlName="lastname" pInputText id="lastname" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="displayName">Display Name*</label>
+                    <input formControlName="displayName" pInputText id="displayName" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="email">Email</label>
+                    <input formControlName="email" pInputText id="email" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="discord">Discord</label>
+                    <input formControlName="discord" pInputText id="discord" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="points">Münchener Punkte</label>
+                    <p-inputNumber
+                        inputId="integeronly"
+                        mode="decimal"
+                        suffix="Punkt{{form.controls['points'].value > 1 ? 'e': ''}}"
+                        formControlName="points"
+                        pInputText id="points"
+                    />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="infoText">Infotext</label>
+                    <textarea
+                        formControlName="infoText"
+                        pInputTextarea id="infoText"
+                        rows="5"
+                        cols="30"
+                    ></textarea>
+                </div>
+                <div class="field col-12">
+                    <button pButton pRipple class="p-button p-button-success" label="Save" (click)="handleAddUser()"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

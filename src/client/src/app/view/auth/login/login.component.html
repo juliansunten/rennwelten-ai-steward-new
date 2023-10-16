@@ -1,0 +1,52 @@
+<div [class]="'login-body flex min-h-screen  '+(layoutService.config.colorScheme === 'light' ? 'layout-light':'layout-dark')">
+    <div class="login-panel w-full" style="background:var(--surface-ground)">
+        <div class="min-h-screen flex" style="background:var(--exception-pages-image); background-repeat: no-repeat">
+            <form class="flex flex-column m-auto form-container" [formGroup]="loginForm" (ngSubmit)="handleSignIn()">
+                <h4 class="m-0 mb-2">Login mit bestehendem Konto</h4>
+                <span class="block text-600 font-medium mb-4"></span>
+                <button (click)="handleSignIn()" type="button" pButton label="Weiter mit Discord" class="block mb-2" style="max-width: 320px;"></button>
+                <button (click)="handleSignIn()" type="button" pButton label="Weiter mit Steam" class="block mb-2" style="max-width: 320px;"></button>
+
+                <h4 class="my-4">Login mit Rennwelten Konto</h4>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-envelope"></i>
+                    <input
+                        formControlName="email"
+                        type="text"
+                        autocomplete="off"
+                        pInputText
+                        placeholder="Email"
+                        class="block mb-3"
+                        style="max-width: 320px; min-width: 270px;"
+                    >
+                </span>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-key"></i>
+                    <input
+                        formControlName="password"
+                        type="password"
+                        autocomplete="off"
+                        pInputText
+                        placeholder="Password"
+                        class="block mb-3"
+                        style="max-width: 320px;min-width: 270px;"
+                    >
+                </span>
+                <button (click)="handleSignIn()" type="submit" pButton label="Weiter mit E-Mail & Passowort" class="block mb-2" style="max-width: 320px;"></button>
+                <a href="#" class="flex text-color-secondary mb-4 text-sm">Passwort vergessen?</a>
+                <a [routerLink]="['register']" class="flex text-color-secondary mb-4 text-sm">Noch kein Konto?</a>
+                <div class="login-footer flex align-items-center absolute" style="bottom: 75px;">
+                    <div
+                        class="flex align-items-center login-footer-logo-container pr-4 mr-4 border-right-1 surface-border">
+                        <img src="../../../../assets/layout/images/logo-gray.png" class="login-footer-logo" style="width: 22px;" />
+                        <img src="../../../../assets/layout/images/appname-gray.png" class="login-footer-appname ml-2"
+                             style="  width: 45px;" />
+                    </div>
+                    <span class="text-sm text-color-secondary mr-3">Copyright 2023</span>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<a [routerLink]="['dashboard']">Dashboard</a>

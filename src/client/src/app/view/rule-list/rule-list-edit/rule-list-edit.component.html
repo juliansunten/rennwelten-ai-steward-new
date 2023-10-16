@@ -1,0 +1,69 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>Regelwerk anlegen</h5>
+            <form [formGroup]="form" class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="title">Name des Regelwerks</label>
+                    <input formControlName="title" pInputText id="title" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="align-content-center flex w-5rem justify-content-between">
+                        <p-checkbox
+                            [binary]="true"
+                            formControlName="isActive" id="isActive" inputId="isActive"></p-checkbox>
+                        <label for="isActive">Aktiv</label>
+                    </div>
+                    <p>Wenn diese Checkbox deaktiviert ist, kann das Regelwerk nicht angewandt werden.
+                        Es wird zudem in der Navigation ausgeblendet.
+                    </p>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="infoText">Infotext</label>
+                    <textarea
+                        formControlName="infoText"
+                        pInputTextarea id="infoText"
+                        rows="5"
+                        cols="30"
+                    ></textarea>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="infoText">Regel</label>
+                    <p-multiSelect [options]="listOfRules"
+                                   formControlName="rules"
+                                   defaultLabel="Bitte wählen"
+                                   optionLabel="title"
+                                   emptyFilterMessage="Es wurden keine Regeln gefunden"
+                    >
+                    </p-multiSelect>
+                </div>
+            </form>
+
+
+            <div class="rule-list-box">
+                <h3>Zusammenfassung {{form.value.title}}:</h3>
+                <ng-template #noRulesSelected>
+                    <h4>Diesem Regelwerk wurden noch keine Regeln hinzugefügt</h4>
+                </ng-template>
+
+                <p-accordion *ngIf="form.value.rules?.length else noRulesSelected" [title]="form.value.title">
+                    <p-accordionTab *ngFor="let rule of form.value.rules">
+                        <ng-template pTemplate="header">
+                            <div class="rule-list-box-header">
+                                <div>{{rule.title}}</div>
+                                <td *ngIf="rule.isActive"><p-tag styleClass="mr-2" severity="success" value="Aktiv"></p-tag>
+                                <td *ngIf="!rule.isActive"><p-tag styleClass="mr-2" severity="danger" value="Inaktiv"></p-tag>
+                            </div>
+                        </ng-template>
+                        {{rule.infoText}}
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+
+            <div class="button-wrapper">
+                <button pButton pRipple (click)="onSubmitRuleList()" [disabled]="form.invalid" label="Speichern" class="p-button-primary"></button>
+                <button pButton pRipple (click)="onNavigateBack()" type="button" label="Zurück" class="p-button-warning"></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>Regel anlegen</h5>
+            <form [formGroup]="form" class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="title">Titel</label>
+                    <input formControlName="title" pInputText id="title" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="align-content-center flex w-5rem justify-content-between">
+                        <p-checkbox
+                            [binary]="true"
+                            formControlName="isActive" id="isActive" inputId="isActive"></p-checkbox>
+                        <label for="isActive">Aktiv</label>
+                    </div>
+                    <p>
+                        Wenn diese Checkbox deaktiviert ist, kann die Regel nicht angewandt werden.
+                    </p>
+                    <label htmlFor="eligiblePenalties">Anwendbare Strafen bei Verstoß</label>
+                    <p-multiSelect
+                        formControlName="eligiblePenalties"
+                        [options]="penaltyList"
+                        defaultLabel="Bitte wählen"
+                        optionLabel="title"
+                        emptyFilterMessage="Es wurden keine Regeln gefunden"
+                    >
+                    </p-multiSelect>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="infoText">Infotext</label>
+                    <textarea
+                        formControlName="infoText"
+                        pInputTextarea id="infoText"
+                        rows="5"
+                        cols="30"
+                    ></textarea>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="infoText">Chat Message</label>
+                    <textarea
+                        formControlName="chatMessage"
+                        pInputTextarea id="chatMessage"
+                        rows="5"
+                        cols="30"
+                    ></textarea>
+                </div>
+            </form>
+            <div class="button-wrapper">
+                <button pButton pRipple (click)="onSubmitRule()" [disabled]="form.invalid" label="Speichern" class="p-button-primary"></button>
+                <button pButton pRipple (click)="onNavigateBack()" type="button" label="Zurück" class="p-button-warning"></button>
+            </div>
+        </div>
+    </div>
+</div>

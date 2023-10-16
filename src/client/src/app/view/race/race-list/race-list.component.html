@@ -1,0 +1,41 @@
+<div class="card">
+    <p-table #dt [value]="raceSeriesList"
+             [paginator]="false"
+             [showCurrentPageReport]="true"
+             responsiveLayout="scroll"
+             [globalFilterFields]="['title','ruleList']">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                <span class="p-input-icon-left w-full sm:w-20rem flex-order-1 sm:flex-order-0">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Suche nach einem Regelwerk" class="w-full" />
+                </span>
+                <button
+                    (click)="navigateToCreateRaceSeries()"
+                    pButton class="p-button-outlined w-full sm:w-auto flex-order-0 sm:flex-order-1"
+                    icon="pi pi-user-plus"
+                    label="neue Rennserie anlegen"
+                >
+                </button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="title" class="white-space-nowrap" style="width:25%">Titel<p-sortIcon field="title"></p-sortIcon></th>
+                <th pSortableColumn="ruleListId" class="white-space-nowrap" style="width:25%">Regelwerk<p-sortIcon field="updatedAt"></p-sortIcon></th>
+                <th class="white-space-nowrap"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+            <tr>
+                <td>{{data.title}}</td>
+                <td>{{data.ruleListId}}</td>
+                <td class="action-column">
+                    <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-warning mr-2" pTooltip="Zur Incident Liste" (click)="navigateToIncidentList(data.id)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" pTooltip="Rennserie bearbeiten" (click)="onEditRaceSeries(data.id)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" pTooltip="Rennserie löschen" (click)="onDeleteRaceSeries(data)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

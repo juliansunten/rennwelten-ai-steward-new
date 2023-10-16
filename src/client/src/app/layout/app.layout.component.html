@@ -1,0 +1,16 @@
+<div class="layout-container" [ngClass]="containerClass">
+    <div class="layout-content-wrapper">
+        <app-topbar></app-topbar>
+        <div class="messages-wrapper">
+            <p-messages severity="success"></p-messages>
+        </div>
+        <app-breadcrumb class="content-breadcrumb"></app-breadcrumb>
+        <div class="layout-content relative">
+
+            <router-outlet></router-outlet>
+            <p-confirmDialog header="Bestätigung erforderlich" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+        </div>
+        <div class="layout-mask"></div>
+    </div>
+    <app-profilemenu></app-profilemenu>
+</div>

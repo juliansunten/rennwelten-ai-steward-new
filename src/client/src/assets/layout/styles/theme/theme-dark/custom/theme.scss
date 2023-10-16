@@ -1,0 +1,13 @@
+$primaryColor: #0F8BFD;
+$primaryLightColor: scale-color($primaryColor, $lightness: 60%) !default;
+$primaryDarkColor: scale-color($primaryColor, $lightness: -10%) !default;
+$primaryDarkerColor: scale-color($primaryColor, $lightness: -20%) !default;
+$primaryTextColor: #ffffff;
+$primary500:#0F8BFD !default;
+
+$highlightBg: $primaryColor;
+$highlightTextColor: $primaryTextColor;
+
+@import 'src/assets/layout/styles/theme/theme-dark/variables';
+@import 'components';
+@import 'src/assets/layout/styles/theme/theme-dark/extensions';

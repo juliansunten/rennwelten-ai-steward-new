@@ -1,0 +1,51 @@
+<div class="card">
+    <p-table #dt [value]="penaltyList"
+             [paginator]="false"
+             [showCurrentPageReport]="true"
+             responsiveLayout="scroll"
+             [globalFilterFields]="['title','reason', 'penaltyCategory', 'points']"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                <span class="p-input-icon-left w-full sm:w-20rem flex-order-1 sm:flex-order-0">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Suche nach einer Strafe" class="w-full" />
+                </span>
+                <button
+                    (click)="navigateToCreatePenalty()"
+                    pButton class="p-button-outlined w-full sm:w-auto flex-order-0 sm:flex-order-1"
+                    icon="pi pi-user-plus"
+                    label="neue Strafe anlegen"
+                >
+                </button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="title" class="white-space-nowrap" style="width:25%">Titel<p-sortIcon field="title"></p-sortIcon></th>
+                <th pSortableColumn="updatedAt" class="white-space-nowrap" style="width:25%">Zuletzt bearbeitet am<p-sortIcon field="updatedAt"></p-sortIcon></th>
+                <th pSortableColumn="reason" class="white-space-nowrap" style="width:25%">Begründung<p-sortIcon field="reason"></p-sortIcon></th>
+                <th pSortableColumn="penaltyCategory" class="white-space-nowrap" style="width:25%">Kategorie der Strafe<p-sortIcon field="penaltyCategory"></p-sortIcon></th>
+                <th pSortableColumn="points" class="white-space-nowrap" style="width:25%">Münchener Punkte<p-sortIcon field="points"></p-sortIcon></th>
+                <th class="white-space-nowrap"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+            <tr>
+                <td>{{data.title}}</td>
+                <td>{{data.updatedAt | date: 'dd.MM.yyyy'}}</td>
+                <td>
+                    <p>
+                        {{data.reason}}
+                    </p>
+                </td>
+                <td>{{data.penaltyCategory | translatePenaltyCategory}}</td>
+                <td>{{data.points}}</td>
+                <td class="action-column">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" (click)="onEditPenalty(data.id)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="onDeletePenalty(data)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

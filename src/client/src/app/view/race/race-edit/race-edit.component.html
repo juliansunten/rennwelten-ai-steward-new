@@ -1,0 +1,59 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>Rennen anlegen</h5>
+<!--            <pre>-->
+<!--                {{form.value |json}}-->
+<!--            </pre>-->
+            <form [formGroup]="form" class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="title">Name der Rennserie</label>
+                    <input formControlName="title" pInputText id="title" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="raceSimulation">Rennsimulation</label>
+                    <input formControlName="raceSimulation" pInputText id="raceSimulation" type="text" />
+                </div>
+                <div *ngIf="ruleListListSelectOptions$ | async as ruleListListSelectOptions"
+                     class="field col-12 md:col-6">
+                    <label htmlFor="ruleListId">Regelwerk auswählen</label>
+                    <p-dropdown placeholder="Bitte wählen" formControlName="ruleListId" [options]="ruleListListSelectOptions"></p-dropdown>
+                </div>
+                <button pButton pRipple (click)="addRace()" label="Rennen hinzufügen" class="p-button-primary"></button>
+
+                <div class="col-12">
+                    <p-accordion formArrayName="races" [multiple]="true" [activeIndex]="[activeIndex]">
+                        <p-accordionTab
+                            *ngFor="let raceForm of racesFormArray.controls; let i = index"
+                            [formGroupName]="i" header="{{raceForm.value.trackName}} {{raceForm.value.trainingDateTime | date : 'dd.mm.yy'}} - {{raceForm.value.mainEventDateTime | date : 'dd.mm.yy'}}">
+                            <div class="p-fluid p-formgrid grid">
+                                <div class="field col-12">
+                                    <label htmlFor="trackName">Rennstrecke</label>
+                                    <p-dropdown placeholder="Bitte wählen" formControlName="trackName" id="trackName" inputId="trackName" [options]="trackList"></p-dropdown>
+                                </div>
+                                <div class="col-12 md:col-4">
+                                    <label htmlFor="trainingDateTime">Training Startzeit</label>
+                                    <p-calendar dateFormat="dd.mm.yyyy" placeholder="dd.mm.yy hh:mm:ss" id="trainingDateTime" inputId="trainingDateTime" formControlName="trainingDateTime" [showTime]="true" [showSeconds]="true"></p-calendar>
+                                </div>
+                                <div class="col-12 md:col-4">
+                                    <label htmlFor="qualifyingDateTime">Qualifying Start</label>
+                                    <p-calendar dateFormat="dd.mm.yyyy"  placeholder="dd.mm.yy hh:mm:ss" id="qualifyingDateTime" inputId="qualifyingDateTime" formControlName="qualifyingDateTime" [showTime]="true" [showSeconds]="true"></p-calendar>
+                                </div>
+                                <div class="col-12 md:col-4">
+                                    <label htmlFor="mainEventDateTime">MainEvent Start</label>
+                                    <p-calendar dateFormat="dd.mm.yy" placeholder="dd.mm.yy hh:mm:ss" id="mainEventDateTime" inputId="mainEventDateTime" formControlName="mainEventDateTime" [showTime]="true" [showSeconds]="true"></p-calendar>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </form>
+
+            <div class="button-wrapper">
+                <button pButton pRipple (click)="onSubmitRaceSeries()" [disabled]="form.invalid" label="Speichern" class="p-button-primary"></button>
+                <button pButton pRipple (click)="onNavigateBack()" type="button" label="Zurück" class="p-button-warning"></button>
+            </div>
+        </div>
+    </div>
+</div>
+

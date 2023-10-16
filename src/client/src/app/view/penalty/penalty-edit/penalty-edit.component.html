@@ -1,0 +1,42 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>Strafe anlegen</h5>
+            <form [formGroup]="form" class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="title">Titel</label>
+                    <input formControlName="title" pInputText id="title" type="text" />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="penaltyCategory">Verstoßkategorie</label>
+                    <p-dropdown formControlName="penaltyCategory" [options]="penaltyCategorySelectOptions"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="reason">Begründung</label>
+                    <textarea
+                        formControlName="reason"
+                        pInputTextarea id="reason"
+                        rows="5"
+                        cols="30"
+                    ></textarea>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="points">Münchener Punkte</label>
+                    <p-inputNumber
+                        inputId="integeronly"
+                        mode="decimal"
+                        suffix="Punkt{{form.controls.points.value > 1 ? 'e': ''}}"
+                        formControlName="points"
+                        pInputText id="points"
+                    />
+                </div>
+            </form>
+
+            <div class="button-wrapper">
+                <button pButton pRipple (click)="onSubmitPenalty()" [disabled]="form.invalid" label="Speichern" class="p-button-primary"></button>
+                <button pButton pRipple (click)="onNavigateBack()" type="button" label="Zurück" class="p-button-warning"></button>
+            </div>
+        </div>
+    </div>
+</div>
+

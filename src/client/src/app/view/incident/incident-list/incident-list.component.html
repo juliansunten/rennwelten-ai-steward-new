@@ -1,0 +1,190 @@
+<div class="card" *ngIf="authService.user$ |async as user">
+    <p-table #dt [value]="incidentList"
+             [paginator]="false"
+             [showCurrentPageReport]="true"
+             responsiveLayout="scroll"
+             [globalFilterFields]="['title','isActive','updatedAt']">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                <span class="p-input-icon-left w-full sm:w-20rem flex-order-1 sm:flex-order-0">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
+                           placeholder="Suche nach einem Vorfall" class="w-full"/>
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="raceEventName" class="white-space-nowrap" style="width:15%">Trackname</th>
+                <th pSortableColumn="involvedCars" class="white-space-nowrap" style="width:15%">Vorfallart</th>
+                <th pSortableColumn="sessionType" class="white-space-nowrap" style="width:15%">Session Typ</th>
+                <th pSortableColumn="accidentRealTime" class="white-space-nowrap" style="width:15%">Zeitpunkt des
+                    Vorfalls
+                    <p-sortIcon field="accidentRealTime"></p-sortIcon>
+                </th>
+                <th pSortableColumn="involvedCars" class="white-space-nowrap" style="width:15%">Involvierte Fahrer</th>
+                <th pSortableColumn="updatedAt" class="white-space-nowrap" style="width:15%">Runde</th>
+                <th pSortableColumn="editor" class="white-space-nowrap" style="width:15%">Bearbeiter</th>
+                <th pSortableColumn="incidentStatus" class="white-space-nowrap" style="width:10%">Status
+                    <p-sortIcon field="incidentStatus"></p-sortIcon>
+                </th>
+                <th pSortableColumn="appealStatus" class="white-space-nowrap" style="width:30%">
+                    Einspruch Status
+                </th>
+                <th pSortableColumn="penalty" class="white-space-nowrap" style="width:10%">
+                    Strafe
+                </th>
+                <th pSortableColumn="suggestedPenalty" class="white-space-nowrap" style="width:10%">
+                    Empfohlene Strafe
+                </th>
+                <th class="white-space-nowrap"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+            <tr>
+                <td>{{data.trackName}}</td>
+                <td>Unfall</td>
+                <td>{{data.sessionType}}</td>
+                <td>
+                    {{data.createdAt | date : 'dd.MM.yy'}}
+                    -
+                    {{formatTime(getReplayTime(data))}}
+                </td>
+
+
+                <td>{{data.involvedCarRaceNumbers}}</td>
+                <td>{{data.involvedCarLaps}}</td>
+                <td class="text-gray-400" *ngIf="!data.assignedUser">Keine</td>
+                <td *ngIf="data.assignedUser">{{data.assignedUser?.displayName}}</td>
+
+                <td>
+                    <p-tag
+                        *ngIf="data.incidentStatus === INCIDENT_STATUS.OPEN"
+                        styleClass="mr-2" severity="success" value="Aktiv">
+                    </p-tag>
+                    <p-tag
+                        *ngIf="data.incidentStatus === INCIDENT_STATUS.REVIEWED"
+                        styleClass="mr-2" severity="danger" value="Inaktiv">
+                    </p-tag>
+                    <p-tag
+                        *ngIf="data.incidentStatus === INCIDENT_STATUS.IN_REVIEW"
+                        styleClass="mr-2" severity="warning" value="Prüfung">
+                    </p-tag>
+                </td>
+                <td></td>
+
+                <td>
+                    <p-dropdown
+                        *ngFor="let carNumber of data.involvedCarRaceNumbers"
+                        (onChange)="onSelectPenalty($event, data.id, data.carNumber)"
+                        [disabled]="data?.assignedUser?.uid !== user.uid" styleClass="w-full"
+                                [options]="penalties" optionLabel="title" optionValue="id"
+                                placeholder="Strafe {{carNumber}}"
+                                appendTo="body">
+                    </p-dropdown>
+                </td>
+                <td></td>
+                <td>
+                    <button *ngIf="!data?.assignedUser && user.uid"
+                            pTooltip="Selbst zuweisen"
+                            pButton pRipple icon="pi pi-user-plus"
+                            class="p-button-rounded p-button-success"
+                            (click)="assignUser(user?.uid, data.id)">
+                    </button>
+                    <button *ngIf="data?.assignedUser?.uid === user.uid"
+                            pTooltip="Zuordnung entziehen"
+                            pButton pRipple icon="pi pi-user-minus"
+                            class="p-button-rounded p-button-success"
+                            (click)="unassignUser(user?.uid, data.id)">
+                    </button>
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-eye" [pTooltip]="'Details anzeigen'"
+                            type="button" class="p-button-success p-button-rounded"
+                            (click)="openDetailsModal(data)"></button>
+                </td>
+
+                <td>
+                    <button pButton pRipple icon="pi pi-play" [pTooltip]="'Zum Replay springen'"
+                            type="button" class="p-button-warning p-button-rounded" (click)="jumpToReview(data)">
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-dialog header="Incident Data" [(visible)]="isModalOpen" [modal]="true" [style]="{ width: '50vw' }"
+              [draggable]="false"
+              [resizable]="false" (onHide)="closeDetailsModal()">
+        <table class="p-datatable p-datatable-table">
+            <thead class="p-datatable-thead">
+            <tr>
+                <th *ngFor="let col of cols">
+                    {{ col.header }}
+                </th>
+            </tr>
+            </thead>
+
+            <tbody class="p-datatable-tbody">
+            <tr>
+                <td>
+                    Steer Angle
+                </td>
+                <td *ngFor="let col of cols | slice:1; let i = index">
+                    {{ currentInvolvedCarsPhysics[i]?.at(physicsIndex)?.steerAngle }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Speed
+                </td>
+
+                <td *ngFor="let col of cols | slice:1; let i = index">
+                    {{currentInvolvedCarsPhysics[i]?.at(physicsIndex)?.speedKmh }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Gas
+                </td>
+                <td *ngFor="let col of cols | slice:1; let i = index">
+                    {{currentInvolvedCarsPhysics[i]?.at(physicsIndex)?.gas }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brake
+                </td>
+                <td *ngFor="let col of cols | slice:1; let i = index">
+                    {{currentInvolvedCarsPhysics[i]?.at(physicsIndex)?.brake }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    RPMS
+                </td>
+                <td *ngFor="let col of cols | slice:1; let i = index">
+                    {{currentInvolvedCarsPhysics[i]?.at(physicsIndex)?.rpms }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Car Damage (F, R, L, Ri, C)
+                </td>
+                <td *ngFor="let col of cols | slice:1; let i = index"><!--
+                        {{ (currentInvolvedCarsPhysics.at(i))?.at(physicsIndex)?.c }},
+                        {{ (currentInvolvedCarsPhysics.at(i))?.at(physicsIndex)?.carDamage.rear }},
+                        {{ (currentInvolvedCarsPhysics.at(i))?.at(physicsIndex)?.carDamage.left }},
+                        {{ (currentInvolvedCarsPhysics.at(i))?.at(physicsIndex)?.carDamage.right }},
+                        {{ (currentInvolvedCarsPhysics.at(i))?.at(physicsIndex)?.carDamage.center }}-->
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+        <div>
+            <p-slider [(ngModel)]="physicsIndex" [step]="1" [max]="199"></p-slider>
+        </div>
+
+
+    </p-dialog>
+</div>
