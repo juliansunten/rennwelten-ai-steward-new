@@ -66,7 +66,8 @@ function createWindow() {
 
   ipcMain.handle("get-express-app-url", () => expressAppUrl);
 
-  mainWindow.loadURL(`file://${__dirname}/../index.html`);
+  mainWindow.loadURL(`file://${__dirname}/../public/index.html`);
+  mainWindow.webContents.openDevTools()
 }
 
 app.on("window-all-closed", () => {
