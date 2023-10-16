@@ -13,10 +13,8 @@
     "private": true,
     "scripts": {
         "build": "tsc",
-        "build:client": "cd client && npm run build:prod",
-        "start:client": "cd client && npm run start",
-        "build:server": "cd be && yarn build",
-        "start:server": "cd be && yarn start",
+        "build:client": "cd src/client && npm run build:prod",
+        "start:client": "cd src/client && npm run start",
         "buildandstart:elektron": "npm run build:server && electron main",
         "start:electron": "electron ./dist/src/main",
         "start": "electron-forge start",
@@ -25,17 +23,17 @@
         "publish": "electron-forge publish"
     },
     "dependencies": {
-        "electron-squirrel-startup": "^1.0.0",
-        "update-electron-app": "^2.0.1",
         "body-parser": "^1.20.2",
         "cookie-parser": "^1.4.6",
         "debug": "^4.3.4",
         "ejs": "^3.1.9",
+        "electron-squirrel-startup": "^1.0.0",
         "express": "^4.18.2",
         "http-errors": "^2.0.0",
         "morgan": "^1.10.0",
         "node-fetch": "^2.7.0",
-        "serve-favicon": "^2.5.0"
+        "serve-favicon": "^2.5.0",
+        "update-electron-app": "^2.0.1"
     },
     "devDependencies": {
         "@electron-forge/cli": "^6.4.2",

@@ -7,7 +7,10 @@ module.exports = {
     rebuildConfig: {},
     makers: [
         {
-            name: '@electron-forge/maker-squirrel'
+            name: '@electron-forge/maker-squirrel',
+            config: {
+                name: "rennwelten-ai-steward",
+            },
         },
     ],
     publishers: [
