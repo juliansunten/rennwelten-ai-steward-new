@@ -5,9 +5,17 @@ import path from "path";
 import fetch from "node-fetch";
 import { name } from "../package.json";
 
+
+
+
 const appName = app.getPath("exe");
 const expressAppUrl = "http://127.0.0.1:3000";
 let mainWindow: BrowserWindow | null;
+
+if (require('electron-squirrel-startup')){
+  app.quit();
+}
+require('update-electron-app')();
 
 const expressPath = appName.endsWith(`${name}.exe`)
   ? path.join("./resources/app.asar", "./dist/src/express-app.js")
